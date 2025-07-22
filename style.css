@@ -35,3 +35,7 @@ li {
 #scan-btn:hover {
   background-color: #218838;
 }
+
+#scanner {
+  display: none;
+}
