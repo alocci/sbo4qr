@@ -72,7 +72,7 @@ function markComplete(code) {
     }
     lastHomeScanTime = now;
     addToLog(entry.label, now);
-    document.getElementById("status").textContent = `🏠 Home logged.`;
+    document.getElementById("status").textContent = `Home logged.`;
     return;
   }
 
@@ -83,7 +83,7 @@ function markComplete(code) {
 
   scannedCodes.add(code);
   addToLog(entry.label, now);
-  document.getElementById("status").textContent = `📍 ${entry.label} logged.`;
+  document.getElementById("status").textContent = ` ${entry.label} logged.`;
 
   if (entry.id) {
     const checkbox = document.getElementById(entry.id);
@@ -110,6 +110,7 @@ function startScanner() {
   if (scannerIsRunning) return;
   document.getElementById("scanner").innerHTML = ""; // reset container
 
+
   scanner = new Html5Qrcode("scanner");
   Html5Qrcode.getCameras().then(devices => {
     if (devices && devices.length) {
@@ -125,11 +126,12 @@ function startScanner() {
       ).then(() => {
         scannerIsRunning = true;
         document.getElementById("scanner").style.display = "block";
-        document.getElementById("status").textContent = "📷 Scanning...";
+          document.getElementById("scanner").innerHTML = "";
+        document.getElementById("status").textContent = "Scanning...";
 
         scanTimeout = setTimeout(() => {
           stopScanner();
-          document.getElementById("status").textContent = "⏳ Scanner stopped after timeout.";
+          document.getElementById("status").textContent = "Scanner stopped after timeout.";
         }, scannerTimeoutDuration);
       });
     } else {
