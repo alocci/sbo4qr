@@ -8,17 +8,20 @@
   <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
 </head>
 <body>
-  <h1>Scavenger Hunt</h1>
-  <p>Scan the QR codes at each location to complete the hunt!</p>
+  <h1>Summer Beer Orienteering '25</h1>
+  <p>Scan the QR code at each control!</p>
 
   <div id="scanner" style="width: 300px; margin: auto;"></div>
+  <div style="text-align: center; margin: 10px;">
+  <button id="scan-btn">Scan</button>
+</div>
 
   <ul id="checklist">
-    <li><input type="checkbox" disabled id="control_uno" /> Location 1</li>
-    <li><input type="checkbox" disabled id="control_deux" /> Location 2</li>
-    <li><input type="checkbox" disabled id="control_drei" /> Location 3</li>
-    <li><input type="checkbox" disabled id="control_fyra" /> Location 4</li>
-    <li><input type="checkbox" disabled id="control_cinque" /> Location 5</li>
+    <li><input type="checkbox" disabled id="Control_1" /> Control 1</li>
+    <li><input type="checkbox" disabled id="Control_2" /> Control 2</li>
+    <li><input type="checkbox" disabled id="Control_3" /> Control 3</li>
+    <li><input type="checkbox" disabled id="Control_4" /> Control 4</li>
+    <li><input type="checkbox" disabled id="Control_5" /> Control 5</li>
   </ul>
 
   <p id="status"></p>

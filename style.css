@@ -18,5 +18,24 @@ li {
 #status {
   margin-top: 20px;
   font-weight: bold;
-  color: green;
+  color: rgb(226, 90, 0);
+}
+
+#scan-btn {
+  padding: 20px 40px;
+  font-size: 1.5rem;
+  background-color: #28a745;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+#scan-btn:hover {
+  background-color: #218838;
+}
+
+#scanner {
+  display: none;
 }
