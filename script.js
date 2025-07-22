@@ -1,9 +1,9 @@
 const expectedCodes = {
-  "location1-qr": "control_uno",
-  "location2-qr": "control_deux",
-  "location3-qr": "control_drei",
-  "location4-qr": "control_fyra",
-  "location5-qr": "control_cinque"
+  "control_uno": "loc1",
+  "control_deux": "loc2",
+  "control_drei": "loc3",
+  "control_fyra": "loc4",
+  "control_cinque": "loc5"
 };
 
 function loadProgress() {
@@ -25,7 +25,7 @@ function markComplete(code) {
 
   document.getElementById(id).checked = true;
   localStorage.setItem(id, "true");
-  document.getElementById("status").textContent = `✅ ${id} unlocked!`;
+  document.getElementById("status").textContent = `✅ ${id} found!`;
 }
 
 loadProgress();
