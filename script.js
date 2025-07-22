@@ -1,9 +1,9 @@
 const expectedCodes = {
-  "control_uno": "loc1",
-  "control_deux": "loc2",
-  "control_drei": "loc3",
-  "control_fyra": "loc4",
-  "control_cinque": "loc5"
+  "control_uno": "Control 1",
+  "control_deux": "Control 2",
+  "control_drei": "Control 3",
+  "control_fyra": "Control 4",
+  "control_cinque": "Control 5"
 };
 
 function loadProgress() {
