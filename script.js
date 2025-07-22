@@ -51,6 +51,7 @@ function startScanner() {
         }
       ).then(() => {
         scannerIsRunning = true;
+        document.getElementById("scanner").style.display = "block";
         document.getElementById("status").textContent = "📷 Scanning...";
 
         // Auto-stop after 20 seconds
@@ -71,6 +72,7 @@ function stopScanner() {
   if (scannerIsRunning) {
     scanner.stop().then(() => {
       scannerIsRunning = false;
+      document.getElementById("scanner").style.display = "none";
       if (scanTimeout) clearTimeout(scanTimeout);
     });
   }
