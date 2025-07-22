@@ -1,0 +1,22 @@
+body {
+  font-family: sans-serif;
+  text-align: center;
+  padding: 1em;
+  background: #f0f0f0;
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+}
+
+li {
+  margin: 10px 0;
+  font-size: 1.2em;
+}
+
+#status {
+  margin-top: 20px;
+  font-weight: bold;
+  color: green;
+}

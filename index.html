@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Scavenger Hunt</title>
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
+</head>
+<body>
+  <h1>Scavenger Hunt</h1>
+  <p>Scan the QR codes at each location to complete the hunt!</p>
+
+  <div id="scanner" style="width: 300px; margin: auto;"></div>
+
+  <ul id="checklist">
+    <li><input type="checkbox" disabled id="control_uno" /> Location 1</li>
+    <li><input type="checkbox" disabled id="control_deux" /> Location 2</li>
+    <li><input type="checkbox" disabled id="control_drei" /> Location 3</li>
+    <li><input type="checkbox" disabled id="control_fyra" /> Location 4</li>
+    <li><input type="checkbox" disabled id="control_cinque" /> Location 5</li>
+  </ul>
+
+  <p id="status"></p>
+
+  <script src="script.js"></script>
+</body>
+</html>
