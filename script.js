@@ -108,6 +108,7 @@ function loadProgress() {
 
 function startScanner() {
   if (scannerIsRunning) return;
+  document.getElementById("scanner").innerHTML = ""; // reset container
 
   scanner = new Html5Qrcode("scanner");
   Html5Qrcode.getCameras().then(devices => {
@@ -151,5 +152,7 @@ function stopScanner() {
   }
 }
 
-document.getElementById("scan-btn").addEventListener("click", startScanner);
-loadProgress();
+window.addEventListener("DOMContentLoaded", () => {
+  document.getElementById("scan-btn").addEventListener("click", startScanner);
+  loadProgress();
+});
