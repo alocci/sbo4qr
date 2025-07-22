@@ -114,6 +114,7 @@ function startScanner() {
   scanner = new Html5Qrcode("scanner");
   Html5Qrcode.getCameras().then(devices => {
     if (devices && devices.length) {
+      document.getElementById("scanner").style.display = "block";
       scanner.start(
         { facingMode: "environment" },
         { fps: 10, qrbox: 250 },
