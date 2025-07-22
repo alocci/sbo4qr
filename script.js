@@ -77,4 +77,6 @@ function stopScanner() {
 }
 
 // Button event listener
-document.getElementById("scan-btn").addEventListener("click", startScanner);
+window.addEventListener("DOMContentLoaded", () => {
+  document.getElementById("scan-btn").addEventListener("click", startScanner);
+});
