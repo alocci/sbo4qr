@@ -31,15 +31,19 @@ function markComplete(code) {
 // Initialize
 loadProgress();
 
-const scanner = new Html5Qrcode("scanner");
+let scanner = null;
 let scannerIsRunning = false;
 let scanTimeout = null;
 
 function startScanner() {
   if (scannerIsRunning) return;
 
+  scanner = new Html5Qrcode("scanner"); // create a new instance each time
+
   Html5Qrcode.getCameras().then(devices => {
     if (devices && devices.length) {
+      document.getElementById("scanner").style.display = "block";
+
       scanner.start(
         { facingMode: "environment" },
         { fps: 10, qrbox: 250 },
@@ -51,13 +55,12 @@ function startScanner() {
         }
       ).then(() => {
         scannerIsRunning = true;
-        document.getElementById("scanner").style.display = "block";
-        document.getElementById("status").textContent = "📷 Scanning...";
+        document.getElementById("status").textContent = "Scanning...";
 
         // Auto-stop after 20 seconds
         scanTimeout = setTimeout(() => {
           stopScanner();
-          document.getElementById("status").textContent = "⏳ Scanner stopped after 20 seconds.";
+          document.getElementById("status").textContent = "Scanner stopped after 20 seconds.";
         }, 20000);
       });
     } else {
@@ -69,11 +72,15 @@ function startScanner() {
 }
 
 function stopScanner() {
-  if (scannerIsRunning) {
+  if (scannerIsRunning && scanner) {
     scanner.stop().then(() => {
+      scanner.clear(); // clear the scanner div
+      scanner = null;
       scannerIsRunning = false;
       document.getElementById("scanner").style.display = "none";
       if (scanTimeout) clearTimeout(scanTimeout);
+    }).catch(err => {
+      console.error("Failed to stop scanner:", err);
     });
   }
 }
