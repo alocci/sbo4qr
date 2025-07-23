@@ -83,7 +83,7 @@ function markComplete(code) {
 
   scannedCodes.add(code);
   addToLog(entry.label, now);
-  document.getElementById("status").textContent = ` ${entry.label} logged.`;
+  document.getElementById("status").textContent = `🚩 ${entry.label} found.`;
 
   if (entry.id) {
     const checkbox = document.getElementById(entry.id);
@@ -127,7 +127,6 @@ function startScanner() {
       ).then(() => {
         scannerIsRunning = true;
         document.getElementById("scanner").style.display = "block";
-          document.getElementById("scanner").innerHTML = "";
         document.getElementById("status").textContent = "Scanning...";
 
         scanTimeout = setTimeout(() => {
