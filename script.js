@@ -56,6 +56,12 @@ function addToLog(label, timestamp) {
   row.appendChild(timeCell);
   row.appendChild(splitCell);
   table.appendChild(row);
+  
+  // Save to localStorage
+  const existingLog = JSON.parse(localStorage.getItem("scanLog")) || [];
+  existingLog.push({ label, timestamp });
+  localStorage.setItem("scanLog", JSON.stringify(existingLog));
+  localStorage.setItem("lastScanTime", timestamp.toString());
 }
 
 function markComplete(code) {
@@ -217,11 +223,47 @@ function refresh() {
 
     // Reset click counter
     resetClicks = 0;
+
+    // Clear local storage
+    localStorage.removeItem("scanLog");
+    localStorage.removeItem("lastScanTime");
   }
+}
+
+function loadLog() {
+  const log = JSON.parse(localStorage.getItem("scanLog")) || [];
+  const table = document.getElementById("log-table").querySelector("tbody");
+
+  lastScanTime = Number(localStorage.getItem("lastScanTime")) || null;
+
+  log.forEach((entry) => {
+    const row = document.createElement("tr");
+
+    const labelCell = document.createElement("td");
+    const timeCell = document.createElement("td");
+    const splitCell = document.createElement("td");
+
+    labelCell.textContent = entry.label;
+    timeCell.textContent = formatTime(entry.timestamp);
+
+    const split = lastScanTime && entry.timestamp !== lastScanTime
+      ? formatSplit(entry.timestamp - lastScanTime)
+      : "--:--:--";
+
+    splitCell.textContent = split;
+
+    row.appendChild(labelCell);
+    row.appendChild(timeCell);
+    row.appendChild(splitCell);
+    table.appendChild(row);
+
+    lastScanTime = entry.timestamp;
+  });
 }
 
 window.addEventListener("DOMContentLoaded", () => {
   document.getElementById("scan-btn").addEventListener("click", startScanner);
   document.getElementById("reset-btn").addEventListener("click", refresh);
   loadProgress();
+  loadLog();
 });
