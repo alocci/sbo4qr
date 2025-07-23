@@ -1,4 +1,4 @@
-const scannerTimeoutDuration = 10000; // 10 seconds
+const scannerTimeoutDuration = 20000; // 20 seconds
 const cooldown = 5000; // 5 seconds 
 
 const expectedCodes = {
