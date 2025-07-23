@@ -1,5 +1,5 @@
 const scannerTimeoutDuration = 10000; // 10 seconds
-const cooldown = 5000; // 5 seconds extra
+const cooldown = 25000; // 5 seconds extra
 const homeCooldown = scannerTimeoutDuration + cooldown;
 const lastScannedMessages = {}; // code -> timestamp
 
