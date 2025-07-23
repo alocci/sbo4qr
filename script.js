@@ -1,5 +1,6 @@
 const scannerTimeoutDuration = 20000; // 20 seconds
 const cooldown = 5000; // 5 seconds 
+const maxResetClicks = 3;
 
 const expectedCodes = {
   "start": { label: "Start" },
@@ -19,6 +20,8 @@ let scanTimeout = null;
 let lastScanTime = null;
 let scannedCodes = new Set();
 let lastScanProcessedTime = 0;
+
+let resetClicks = 0;
 
 function formatTime(ms) {
   const date = new Date(ms);
@@ -182,9 +185,42 @@ function stopScanner() {
 }
 
 function refresh() {
-  
-}
+  resetClicks++;
+  const btn = document.getElementById("reset-btn");
+  btn.textContent = `Reset (${resetClicks}/${maxResetClicks})`;
 
+  if (resetClicks >= maxResetClicks) {
+    // Reset progress
+    for (const code in expectedCodes) {
+      const entry = expectedCodes[code];
+      if (entry.id) {
+        localStorage.removeItem(entry.id);
+        const checkbox = document.getElementById(entry.id);
+        if (checkbox) checkbox.checked = false;
+      }
+    }
+
+    // Clear log table
+    const tableBody = document.querySelector("#log-table tbody");
+    tableBody.innerHTML = "";
+
+    // Clear total time box
+    const totalBox = document.getElementById("total-time");
+    totalBox.textContent = "";
+    totalBox.style.display = "none";
+
+    // Clear status
+    document.getElementById("status").textContent = "";
+
+    // Reset scanned state
+    scannedCodes.clear();
+    lastScanTime = null;
+
+    // Reset click counter
+    resetClicks = 0;
+    btn.textContent = `Reset (0/${maxResetClicks})`;
+  }
+}
 
 window.addEventListener("DOMContentLoaded", () => {
   document.getElementById("scan-btn").addEventListener("click", startScanner);
