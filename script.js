@@ -70,6 +70,25 @@ function markComplete(code) {
     return;
   }
 
+  if (code === "finish") {
+    const startRow = Array.from(document.querySelectorAll("#log-table tbody tr"))
+      .find(row => row.cells[0].textContent === "Start");
+  
+    const endRow = Array.from(document.querySelectorAll("#log-table tbody tr"))
+      .find(row => row.cells[0].textContent === "Finish");
+  
+    if (startRow && endRow) {
+      const startTime = new Date("1970-01-01T" + startRow.cells[1].textContent + "Z").getTime();
+      const endTime = new Date("1970-01-01T" + endRow.cells[1].textContent + "Z").getTime();
+      const totalTime = endTime - startTime;
+  
+      const totalBox = document.getElementById("total-time");
+      totalBox.textContent = `🏁 Total Time: ${formatSplit(totalTime)}`;
+      totalBox.style.display = "block";
+    }
+  }
+
+
   if (scannedCodes.has(code)) {
     document.getElementById("status").textContent = `✔️ ${entry.label} already scanned.`;
     return;
