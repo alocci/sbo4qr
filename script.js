@@ -1,15 +1,3 @@
-window.addEventListener("DOMContentLoaded", () => {
-  const scanBtn = document.getElementById("scan-btn");
-  if (!scanBtn) {
-    console.error("Scan button not found!");
-    return;
-  }
-  scanBtn.addEventListener("click", () => {
-    console.log("Scan button clicked!");
-    document.getElementById("status").textContent = "Scan button clicked!";
-  });
-});
-
 const scannerTimeoutDuration = 10000; // 10 seconds
 const cooldown = 5000; // 5 seconds extra
 const homeCooldown = scannerTimeoutDuration + homeCooldownExtra;
