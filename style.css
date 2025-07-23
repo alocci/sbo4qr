@@ -93,4 +93,9 @@ body {
   cursor: pointer;
 }
 
+.reset-btn-container {
+  text-align: center;
+  margin: 5px;
+}
+
 
