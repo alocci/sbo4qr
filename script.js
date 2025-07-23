@@ -1,6 +1,6 @@
 const scannerTimeoutDuration = 10000; // 10 seconds
 const cooldown = 5000; // 5 seconds extra
-const homeCooldown = scannerTimeoutDuration + homeCooldownExtra;
+const homeCooldown = scannerTimeoutDuration + cooldown;
 const lastScannedMessages = {}; // code -> timestamp
 
 const expectedCodes = {
@@ -117,7 +117,7 @@ function loadProgress() {
 function startScanner() {
   if (scannerIsRunning) return;
 
-  // document.getElementById("scanner").innerHTML = ""; // Clear old scanner view
+  document.getElementById("scanner").innerHTML = ""; // Clear old scanner view
   document.getElementById("scanner").style.display = "block";
   document.getElementById("status").textContent = "Starting scanner...";
 
