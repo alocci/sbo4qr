@@ -1,6 +1,7 @@
-const scannerTimeoutDuration = 20000; // 20 seconds
-const homeCooldownExtra = 10000; // 10 seconds extra
+const scannerTimeoutDuration = 10000; // 10 seconds
+const cooldown = 5000; // 5 seconds extra
 const homeCooldown = scannerTimeoutDuration + homeCooldownExtra;
+const lastScannedMessages = {}; // code -> timestamp
 
 const expectedCodes = {
   "start": { label: "Start" },
@@ -77,7 +78,13 @@ function markComplete(code) {
   }
 
   if (scannedCodes.has(code)) {
-    document.getElementById("status").textContent = `✔️ ${entry.label} already scanned.`;
+    const now = Date.now();
+  
+    // Cooldown logic
+    if (!lastScannedMessages[code] || (now - lastScannedMessages[code] > cooldown)) {
+      document.getElementById("status").textContent = `✔️ ${entry.label} already scanned.`;
+      lastScannedMessages[code] = now;
+    }
     return;
   }
 
