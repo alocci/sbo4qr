@@ -200,6 +200,10 @@ function refresh() {
       }
     }
 
+    // Reset scanned state
+    scannedCodes.clear();
+    lastScanTime = null;
+
     // Clear log table
     const tableBody = document.querySelector("#log-table tbody");
     tableBody.innerHTML = "";
@@ -212,13 +216,9 @@ function refresh() {
     // Clear status
     document.getElementById("status").textContent = "";
 
-    // Reset scanned state
-    scannedCodes.clear();
-    lastScanTime = null;
-
     // Reset click counter
     resetClicks = 0;
-    btn.textContent = `Reset (0/${maxResetClicks})`;
+    // btn.textContent = `Reset (0/${maxResetClicks})`;
   }
 }
 
