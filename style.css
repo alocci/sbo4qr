@@ -1,35 +1,35 @@
 body {
   font-family: sans-serif;
   text-align: center;
-  padding: 1em;
+  padding: 1em; /* 1em = relative, 16px if base font size is 16px */
   background: #f0f0f0;
 }
 
-#checkbox-container {
+#checkbox-container { /* # = IDs, unique, one element only */
   display: flex;
   justify-content: center;
-  gap: 20px;
-  margin-bottom: 20px;
+  gap: 20px; /* px = absolute, gap between checkboxes */
+  margin-bottom: 20px;  /* margins are between borders and other elements (external) */
   flex-wrap: wrap;
 }
 
-#checkbox-container label {
+#checkbox-container label { /* Descendents or elements within the ID */
   font-size: 1.1em;
 }
 
-#status {
+#status { 
   margin-top: 20px;
   margin-bottom: 1em; 
   font-weight: bold;
-  color: rgb(226, 90, 0);
+  color: rgb(226, 90, 0);  /* Can change graphically in VSC */
 }
 
 #scan-btn {
-  padding: 20px 40px;
-  margin-top: 1em; /* space above scan button */
-  margin-bottom: 1em; /* space below scan button */
+  padding: 20px 40px; /* padding is between borders and the element itself (internal) */
+  margin-top: 1em; 
+  margin-bottom: 1em;
   font-size: 1.5rem;
-  background-color: #28a745;
+  background-color: #28a745; 
   color: white;
   border: none;
   border-radius: 8px;
@@ -37,11 +37,11 @@ body {
   transition: background-color 0.3s ease;
 }
 
-#scan-btn:hover {
+#scan-btn:hover { /* ID + a pseudo class- hover, only usable by ID */
   background-color: #218838;
 }
 
-.scan-btn-container {
+.scan-btn-container { /* . = class, any element with this class */
   text-align: center;
   margin: 10px;
 }
