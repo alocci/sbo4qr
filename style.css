@@ -18,20 +18,19 @@ body {
 }
 
 #status {
-  margin-top: 20px;
+  margin: 20px 0;
   font-weight: bold;
-  color: rgb(226, 90, 0);
+  color: #e25a00;
 }
 
 #scan-btn {
-  padding: 20px 40px;
-  font-size: 1.5rem;
+  padding: 15px 30px;
+  font-size: 1.2rem;
   background-color: #28a745;
   color: white;
   border: none;
-  border-radius: 8px;
+  border-radius: 6px;
   cursor: pointer;
-  transition: background-color 0.3s ease;
 }
 
 #scan-btn:hover {
@@ -41,7 +40,7 @@ body {
 #scanner {
   display: none;
   width: 300px;
-  margin: auto;
+  margin: 0 auto 20px auto;
 }
 
 #log-table {
