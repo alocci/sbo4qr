@@ -1,7 +1,5 @@
 const scannerTimeoutDuration = 10000; // 10 seconds
-const cooldown = 5000; // 5 seconds extra
-const homeCooldown = scannerTimeoutDuration + cooldown;
-const lastScannedMessages = {}; // code -> timestamp
+const cooldown = 5000; // 5 seconds 
 
 const expectedCodes = {
   "start": { label: "Start" },
@@ -20,7 +18,6 @@ let scanTimeout = null;
 
 let lastScanTime = null;
 let scannedCodes = new Set();
-let lastHomeScanTime = 0;
 let lastScanProcessedTime = 0;
 
 function formatTime(ms) {
@@ -68,29 +65,17 @@ function markComplete(code) {
   const now = Date.now();
 
   if (code === "home") {
-    if (now - lastHomeScanTime < homeCooldown) {
-      document.getElementById("status").textContent = "⏳ Home scanned too recently.";
-      return;
-    }
-    lastHomeScanTime = now;
     addToLog(entry.label, now);
     document.getElementById("status").textContent = `Home logged.`;
     return;
   }
 
   if (scannedCodes.has(code)) {
-    const now = Date.now();
-  
-    // Cooldown logic
-    if (!lastScannedMessages[code] || (now - lastScannedMessages[code] > cooldown)) {
-      document.getElementById("status").textContent = `✔️ ${entry.label} already scanned.`;
-      lastScannedMessages[code] = now;
-    }
+    document.getElementById("status").textContent = `✔️ ${entry.label} already scanned.`;
     return;
   }
 
   scannedCodes.add(code);
-  lastScannedMessages[code] = now;
   addToLog(entry.label, now);
   document.getElementById("status").textContent = `🚩 ${entry.label} found!`;
 
@@ -138,11 +123,10 @@ function startScanner() {
         const now = Date.now();
         if (now - lastScanProcessedTime >= cooldown) {
           lastScanProcessedTime = now;
-          markComplete(qrCodeMessage);  // Only gets called once per cooldown
+          markComplete(qrCodeMessage); 
         }
       },
       errorMessage => {
-        // Optionally show scan errors
         console.warn("QR scan error:", errorMessage);
       }
     ).then(() => {
