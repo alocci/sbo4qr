@@ -1,7 +1,7 @@
 <!--Comments -->
-<!DOCTYPE html>
+<!DOCTYPE html>   <!-- Tells page what type and format it is -->
 <html lang="en">
-<head>
+<head> <!-- stuff used by the web, not displayed on the page -->
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Summer Beer Orienteering Stockholm</title>
@@ -13,13 +13,13 @@
   <h1>Summer Beer Orienteering '25</h1>
   <p>Scan the QR code at each control!</p>
 
-  <div id="checkbox-container">
+  <div id="checkbox-container"> <!-- division of sections -->
     <label><input type="checkbox" disabled id="Control_1"> Control 1</label>
     <label><input type="checkbox" disabled id="Control_2"> Control 2</label>
     <label><input type="checkbox" disabled id="Control_3"> Control 3</label>
     <label><input type="checkbox" disabled id="Control_4"> Control 4</label>
     <label><input type="checkbox" disabled id="Control_5"> Control 5</label>
-  </div>
+  </div>  <!-- seems like everything needs a start and end -->
   
 <p id="status"></p>
 
@@ -41,7 +41,9 @@
 </table>
   
 <div id="total-time" class="outlined-box"></div>
-
-  <script src="script.js"></script>
+  
+<!--always placed at the end so that DOM ( Doc obj model, everything above ) 
+  is fully loaded before running script  -->
+  <script src="script.js"></script> 
 </body>
 </html>
