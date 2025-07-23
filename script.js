@@ -113,53 +113,69 @@ function loadProgress() {
   }
 }
 
+
 function startScanner() {
   if (scannerIsRunning) return;
-  document.getElementById("scanner").innerHTML = ""; // reset container
 
+  document.getElementById("scanner").innerHTML = ""; // Clear old scanner view
+  document.getElementById("scanner").style.display = "block";
+  document.getElementById("status").textContent = "Starting scanner...";
 
   scanner = new Html5Qrcode("scanner");
-  Html5Qrcode.getCameras().then(devices => {
-    if (devices && devices.length) {
-      document.getElementById("scanner").style.display = "block";
-      scanner.start(
-        { facingMode: "environment" },
-        { fps: 10, qrbox: 250 },
-        qrCodeMessage => {
-          markComplete(qrCodeMessage);
-        },
-        errorMessage => {
-          // ignore
-        }
-      ).then(() => {
-        scannerIsRunning = true;
-        document.getElementById("scanner").style.display = "block";
-        document.getElementById("status").textContent = "Scanning...";
 
-        scanTimeout = setTimeout(() => {
-          stopScanner();
-          document.getElementById("status").textContent = "Scanner stopped after timeout.";
-        }, scannerTimeoutDuration);
-      });
-    } else {
+  Html5Qrcode.getCameras().then(devices => {
+    if (!devices || devices.length === 0) {
       document.getElementById("status").textContent = "No camera found.";
+      return;
     }
+
+    scanner.start(
+      { facingMode: "environment" },
+      { fps: 10, qrbox: 250 },
+      qrCodeMessage => {
+        console.log("QR detected:", qrCodeMessage); // Debug
+        markComplete(qrCodeMessage);
+      },
+      errorMessage => {
+        // Optionally show scan errors
+        console.warn("QR scan error:", errorMessage);
+      }
+    ).then(() => {
+      scannerIsRunning = true;
+      document.getElementById("status").textContent = "Scanning...";
+
+      scanTimeout = setTimeout(() => {
+        stopScanner();
+        document.getElementById("status").textContent = "Scanner stopped after timeout.";
+      }, scannerTimeoutDuration);
+    }).catch(err => {
+      console.error("Failed to start scanner:", err);
+      document.getElementById("status").textContent = "Failed to start scanner.";
+    });
+
   }).catch(err => {
+    console.error("Camera error:", err);
     document.getElementById("status").textContent = "Camera access error.";
   });
 }
 
 function stopScanner() {
-  if (scannerIsRunning && scanner) {
-    scanner.stop().then(() => {
-      scanner.clear();
-      scannerIsRunning = false;
-      scanner = null;
-      document.getElementById("scanner").style.display = "none";
-      if (scanTimeout) clearTimeout(scanTimeout);
-    });
-  }
+  if (!scannerIsRunning || !scanner) return;
+
+  scanner.stop().then(() => {
+    scanner.clear();
+    scannerIsRunning = false;
+    scanner = null;
+    document.getElementById("scanner").style.display = "none";
+    if (scanTimeout) {
+      clearTimeout(scanTimeout);
+      scanTimeout = null;
+    }
+  }).catch(err => {
+    console.error("Error stopping scanner:", err);
+  });
 }
+
 
 window.addEventListener("DOMContentLoaded", () => {
   document.getElementById("scan-btn").addEventListener("click", startScanner);
