@@ -181,8 +181,13 @@ function stopScanner() {
   });
 }
 
+function refresh() {
+  
+}
+
 
 window.addEventListener("DOMContentLoaded", () => {
   document.getElementById("scan-btn").addEventListener("click", startScanner);
+  document.getElementById("reset-btn").addEventListener("click", refresh);
   loadProgress();
 });
