@@ -66,7 +66,7 @@ function markComplete(code) {
 
   if (code === "home") {
     addToLog(entry.label, now);
-    document.getElementById("status").textContent = `Home logged.`;
+    document.getElementById("status").textContent = `🧺🍺 Home logged.`;
     return;
   }
 
