@@ -89,6 +89,7 @@ function markComplete(code) {
   }
 
   scannedCodes.add(code);
+  lastScannedMessages[code] = now;
   addToLog(entry.label, now);
   document.getElementById("status").textContent = `🚩 ${entry.label} found!`;
 
