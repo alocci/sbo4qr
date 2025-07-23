@@ -67,3 +67,17 @@ body {
 #log-table th {
   background-color: #eee;
 }
+
+.outlined-box {
+  margin: 1em auto;
+  padding: 20px 40px;
+  font-size: 1.5rem;
+  border: 2px solid #28a745;
+  border-radius: 8px;
+  width: fit-content;
+  color: #333;
+}
+
+#total-time {
+  display: none;
+}
