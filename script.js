@@ -90,7 +90,7 @@ function markComplete(code) {
 
   scannedCodes.add(code);
   addToLog(entry.label, now);
-  document.getElementById("status").textContent = `🚩 ${entry.label} found.`;
+  document.getElementById("status").textContent = `🚩 ${entry.label} found!`;
 
   if (entry.id) {
     const checkbox = document.getElementById(entry.id);
