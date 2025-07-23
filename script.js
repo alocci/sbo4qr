@@ -117,7 +117,7 @@ function loadProgress() {
 function startScanner() {
   if (scannerIsRunning) return;
 
-  document.getElementById("scanner").innerHTML = ""; // Clear old scanner view
+  // document.getElementById("scanner").innerHTML = ""; // Clear old scanner view
   document.getElementById("scanner").style.display = "block";
   document.getElementById("status").textContent = "Starting scanner...";
 
