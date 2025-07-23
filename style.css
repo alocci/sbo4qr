@@ -19,12 +19,15 @@ body {
 
 #status {
   margin-top: 20px;
+  margin-bottom: 1em; 
   font-weight: bold;
   color: rgb(226, 90, 0);
 }
 
 #scan-btn {
   padding: 20px 40px;
+  margin-top: 1em; /* space above scan button */
+  margin-bottom: 1em; /* space below scan button */
   font-size: 1.5rem;
   background-color: #28a745;
   color: white;
