@@ -11,6 +11,7 @@
   <h1>Summer Beer Orienteering '25</h1>
   <p>Scan the QR code at each control!</p>
 
+  <!-- Checkboxes -->
   <div id="checkbox-container">
     <label><input type="checkbox" disabled id="Control_1"> Control 1</label>
     <label><input type="checkbox" disabled id="Control_2"> Control 2</label>
@@ -19,25 +20,22 @@
     <label><input type="checkbox" disabled id="Control_5"> Control 5</label>
   </div>
 
-  <!-- STATUS ABOVE SCANNER -->
-  <p id="status"></p>
+  <!-- Status -->
+  <p id="status">Status will appear here.</p>
 
-  <!-- CAMERA SCANNER -->
-  <div id="scanner"></div>
-  <div style="text-align: center; margin: 10px;">
+  <!-- Scanner -->
+  <div id="scanner" class="scanner-box"></div>
+
+  <!-- Button -->
+  <div>
     <button id="scan-btn">Scan</button>
   </div>
 
-  <!-- SCAN BUTTON -->
-  <div style="margin-top: 20px;">
-    <button id="scan-btn">Scan</button>
-  </div>
-
-  <!-- TIME LOG TABLE -->
+  <!-- Log Table -->
   <table id="log-table">
     <thead>
       <tr>
-        <th>Tag</th>
+        <th>Label</th>
         <th>Timestamp</th>
         <th>Split</th>
       </tr>
