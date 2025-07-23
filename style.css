@@ -41,6 +41,11 @@ body {
   background-color: #218838;
 }
 
+.scan-btn-container {
+  text-align: center;
+  margin: 10px;
+}
+
 #scanner {
   display: none;
   width: 300px;
