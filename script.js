@@ -187,7 +187,7 @@ function stopScanner() {
 function refresh() {
   resetClicks++;
   const btn = document.getElementById("reset-btn");
-  btn.textContent = `Reset (${resetClicks}/${maxResetClicks})`;
+  // btn.textContent = `Reset (${resetClicks}/${maxResetClicks})`;
 
   if (resetClicks >= maxResetClicks) {
     // Reset progress
