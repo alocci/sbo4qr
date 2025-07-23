@@ -40,6 +40,8 @@ body {
 
 #scanner {
   display: none;
+  width: 300px;
+  margin: auto;
 }
 
 #log-table {
