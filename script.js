@@ -1,5 +1,5 @@
 const scannerTimeoutDuration = 10000; // 10 seconds
-const cooldown = 25000; // 5 seconds extra
+const cooldown = 5000; // 5 seconds extra
 const homeCooldown = scannerTimeoutDuration + cooldown;
 const lastScannedMessages = {}; // code -> timestamp
 
@@ -21,6 +21,7 @@ let scanTimeout = null;
 let lastScanTime = null;
 let scannedCodes = new Set();
 let lastHomeScanTime = 0;
+let lastScanProcessedTime = 0;
 
 function formatTime(ms) {
   const date = new Date(ms);
@@ -134,8 +135,11 @@ function startScanner() {
       { facingMode: "environment" },
       { fps: 10, qrbox: 250 },
       qrCodeMessage => {
-        console.log("QR detected:", qrCodeMessage); // Debug
-        markComplete(qrCodeMessage);
+        const now = Date.now();
+        if (now - lastScanProcessedTime >= cooldown) {
+          lastScanProcessedTime = now;
+          markComplete(qrCodeMessage);  // Only gets called once per cooldown
+        }
       },
       errorMessage => {
         // Optionally show scan errors
