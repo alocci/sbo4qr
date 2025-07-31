@@ -1,8 +1,8 @@
 body {
   font-family: sans-serif;
   text-align: center;
-  padding: 1em; /* 1em = relative, 16px if base font size is 16px */
-  background: #f0f0f0;
+  padding: 1em; 
+  background: #f0f0f0; /* background is a shorthand property that can set multiple background-related properties at once */
 }
 
 #checkbox-container { /* # = IDs, unique, one element only */
@@ -14,22 +14,22 @@ body {
 }
 
 #checkbox-container label { /* Descendents or elements within the ID */
-  font-size: 1.1em;
+  font-size: 1.1rem;
 }
 
 #status { 
   margin-top: 20px;
   margin-bottom: 1em; 
   font-weight: bold;
-  color: rgb(226, 90, 0);  /* Can change graphically in VSC */
+  color: rgb(226, 90, 0);  /* 255 values for rgb. Can change graphically in VSC */
 }
 
 #scan-btn {
   padding: 20px 40px; /* padding is between borders and the element itself (internal) */
   margin-top: 1em; 
-  margin-bottom: 1em;
-  font-size: 1.5rem;
-  background-color: #28a745; 
+  margin-bottom: 1em; /* 1em = relative to current element, 16px if base font size is 16px */
+  font-size: 1.5rem; /* 1rem = relative to root, not affected by container */
+  background-color: #28a745;  /* one background property, specifically background color of an element */
   color: white;
   border: none;
   border-radius: 8px;
@@ -38,7 +38,7 @@ body {
 }
 
 #scan-btn:hover { /* ID + a pseudo class- hover, only usable by ID */
-  background-color: #218838;
+  background-color: #218838;  /* Hexadecimal colors represent #RRGGBB */
 }
 
 .scan-btn-container { /* . = class, any element with this class */
@@ -48,14 +48,14 @@ body {
 
 #scanner {
   display: none;
-  width: 300px;
+  width: 300px; /* Could use more relative width in the future */
   margin: auto;
 }
 
 #log-table {
   margin: 20px auto;
   border-collapse: collapse;
-  width: 90%;
+  width: 90%; /* relative width */
 }
 
 #log-table th, #log-table td {
@@ -96,5 +96,5 @@ body {
 }
 
 #reset-btn:active {
-  background-color: rgba(0, 0, 0, 0.1); /* subtle gray feedback on touch */
+  background-color: rgba(0, 0, 0, 0.1); /* subtle gray feedback on touch, the fourth element ( a ) is transparency. 1 = opaque */
 }
