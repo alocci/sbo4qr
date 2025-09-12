@@ -92,6 +92,8 @@ function addToLog(label, timestamp) {
   localStorage.setItem("lastScanTime", timestamp.toString());
 }
 
+// Problem here with finish being scanned first
+// The first if statement will never trigger
 function calculateAndDisplayTotalTime() {
   const rows = Array.from(document.querySelectorAll("#log-table tbody tr"));
   const startRow = rows.find(row => row.cells[0].textContent === "Start");
@@ -130,9 +132,12 @@ function updateUI(code) {
   }
 
   if (scannedCodes.has(code)) {
-    setStatus(`✔️ ${entry.label} already scanned.`); // backticks allow interpolation
-    return;
-  }
+    if (code === "finish") {
+      calculateAndDisplayTotalTime();
+      setStatus(`⏱ Total time recalculated.`); // backticks allow interpolation
+    } else {
+      setStatus(`✔️ ${entry.label} already scanned.`);
+    }
 
   scannedCodes.add(code);
   addToLog(entry.label, now);
@@ -300,4 +305,5 @@ window.addEventListener("DOMContentLoaded", () => {
   loadProgress();
   loadLog();
 });
+
 
