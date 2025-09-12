@@ -93,7 +93,10 @@ function addToLog(label, timestamp) {
 }
 
 // Problem here with finish being scanned first
-// The first if statement will never trigger
+// Now it will print the finish scanned before start
+// But is that what we want? Change logic to accommodate
+// Previous message was finish time recalculated, test this function as well
+// How will you handle multiple finishes in the table and using the timestamps?
 function calculateAndDisplayTotalTime() {
   const rows = Array.from(document.querySelectorAll("#log-table tbody tr"));
   const startRow = rows.find(row => row.cells[0].textContent === "Start");
@@ -306,6 +309,7 @@ window.addEventListener("DOMContentLoaded", () => {
   loadProgress();
   loadLog();
 });
+
 
 
 
