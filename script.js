@@ -138,6 +138,7 @@ function updateUI(code) {
     } else {
       setStatus(`✔️ ${entry.label} already scanned.`);
     }
+  }
 
   scannedCodes.add(code);
   addToLog(entry.label, now);
@@ -305,5 +306,6 @@ window.addEventListener("DOMContentLoaded", () => {
   loadProgress();
   loadLog();
 });
+
 
 
