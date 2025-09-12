@@ -247,8 +247,8 @@ function refresh() {
     lastScanTime = null;
 
     // Clear log table
-    const tableBody = document.querySelector("#log-table tbody");
-    tableBody.innerHTML = "";
+    const table = document.querySelector("#log-table tbody");
+    table.innerHTML = "";
 
     // Clear total time box
     const totalBox = document.getElementById("total-time");
@@ -296,7 +296,7 @@ function loadLog() {
     prevTimestamp = entry.timestamp;
   });
   
-  tableBody.appendChild(fragment);
+  table.appendChild(fragment);
   lastScanTime = prevTimestamp;
 }
 
@@ -306,6 +306,7 @@ window.addEventListener("DOMContentLoaded", () => {
   loadProgress();
   loadLog();
 });
+
 
 
 
