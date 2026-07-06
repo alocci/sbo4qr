@@ -21,22 +21,10 @@ li {
   color: rgb(226, 90, 0);
 }
 
-#scanner {
-  display: none;
-  width: 300px;
-  margin: 20px auto;
-}
-
-.button-row {
-  display: flex;
-  justify-content: center;
-  gap: 12px;
-  flex-wrap: wrap;
-  margin: 15px 0;
-  
-#button{
-  padding: 18px 30px;
-  font-size: 1.2rem;
+#scan-btn {
+  padding: 20px 40px;
+  font-size: 1.5rem;
+  background-color: #28a745;
   color: white;
   border: none;
   border-radius: 8px;
@@ -44,37 +32,10 @@ li {
   transition: background-color 0.3s ease;
 }
 
-#scan-btn {
-  background-color: #28a745;
-}
-
 #scan-btn:hover {
   background-color: #218838;
 }
 
-#resume-btn {
-  background-color: #007bff;
+#scanner {
+  display: none;
 }
-
-#scan-btn:hover {
-  background-color: #0069d9;
-}
-
-#reset-btn {
-  background-color: #dc3545;
-}
-
-#reset-btn:hover {
-  background-color: #c82333;
-}
-
-
-
-
-
-
-
-
-
-
-
