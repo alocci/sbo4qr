@@ -204,6 +204,8 @@ function startScanner() {
         if (now - lastScanProcessedTime >= cooldown) {
           lastScanProcessedTime = now;
           updateUI(qrCodeMessage); 
+          stopScanner(); // This is good for stopping after a successful scan process
+          // But we may want to know if what we scanned was acceptable. Do later if necessary.
         }
       },
       errorMessage => {
