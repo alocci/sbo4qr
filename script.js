@@ -95,7 +95,7 @@ function startScanner() {
   scanner = new Html5Qrcode("scanner"); // create a new instance each time
 
   Html5Qrcode.getCameras().then(devices => {
-    if (!devices || devices.length === 0) {
+    if (!devices || devices.length === 0) { // avoids type coercion
       document.getElementById("status").textContent = "No ccamera found.";
       return;
     } 
@@ -107,6 +107,7 @@ function startScanner() {
       { fps: 10, qrbox: 250 },
       qrCodeMessage => {
         markComplete(qrCodeMessage);
+        stopScanner();
       },
       errorMessage => {
         // Ignore scan errors
@@ -127,7 +128,7 @@ function startScanner() {
 }
 
 function stopScanner() {
-  if (!scannerIsRunning || !scanner) return;
+  if (!scannerIsRunning || !scanner) return; // Guard clausing
   scanner.stop().then(() => {
     scanner.clear(); // clear the scanner div
     scanner = null;
