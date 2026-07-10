@@ -181,7 +181,7 @@ function addToLog(label, timestamp) {
 function calculateAndDisplayTotalTime() {
   const rows = Array.from(document.querySelectorAll("#log-table tbody tr"));
   const startRow = rows.find(row => row.cells[0].textContent === "Start");
-  const finishRow = rows.find(row => row.cells[0].textContent === "Finish");
+  const finishRow = rows.filter(row => row.cells[0].textContent === "Finish").at(-1);
 
   if (!startRow || !finishRow) return; // easier to read an early return than wrapped conditional ?
   
@@ -209,19 +209,22 @@ function updateUI(code) {
 
   const now = Date.now();
 
-  if (code === "home") {
+  // Events
+  if (code === "home" || code === "finish" ) {
     addToLog(entry.label, now);
-    setStatus("🧺🍺 Home logged."); 
-    return;
-  }
-
-  if (gameState.scannedCodes.includes(code)) {
+    if (code === "home") { 
+      setStatus("🧺🍺 Home logged."); 
+    }
     if (code === "finish") {
       calculateAndDisplayTotalTime();
       setStatus(`⏱ Total time recalculated.`); // backticks allow interpolation
-    } else {
-      setStatus(`✔️ ${entry.label} already scanned.`);
     }
+    return;
+  }
+
+  // Controls
+  if (gameState.scannedCodes.includes(code)) {
+    setStatus(`✔️ ${entry.label} already scanned.`);
     return;
   }
 
@@ -239,12 +242,6 @@ function updateUI(code) {
 
   addToLog(entry.label, now);
   setStatus(`🚩 ${entry.label} found!`);
-  
-  console.log(gameState);
-
-  if (code === "finish") {
-    calculateAndDisplayTotalTime();
-  }
 }
 
 function stopScanner() {
