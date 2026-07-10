@@ -182,7 +182,14 @@ function updateUI(code) {
   if (entry.id) {
     gameState.controls[entry.id] = true;
     saveGame();
+    
+    const checkbox = document.getElementById(entry.id);
+    if (checkbox) {
+      checkbox.checked = true;
+    }
   }
+  
+  console.log(gameState);
 
   if (code === "finish") {
     calculateAndDisplayTotalTime();
