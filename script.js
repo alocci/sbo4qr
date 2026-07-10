@@ -215,10 +215,10 @@ function updateUI(code) {
   }
 
   scannedCodes.add(code);
-  setStatus(`Debug: ${Array.from(scannedCodes).join(", ")}`);
-  //console.log("Scanned codes:", scannedCodes);
+  console.log("Scanned codes:", scannedCodes);
+  
   addToLog(entry.label, now);
-  setStatus(`🚩 ${entry.label} found! | Set: ${Array.from(scannedCodes).join(", ")}`);
+  setStatus(`🚩 ${entry.label} found!`);
 
   // Update game state
   if (entry.id) {
