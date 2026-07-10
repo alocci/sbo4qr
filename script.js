@@ -1,7 +1,6 @@
 // Constants
 const scannerTimeoutDuration = 20000; // 20 seconds
-const cooldown = 1000; // 5 seconds 
-// const maxResetClicks = 3;
+// const cooldown = 1000; // 5 seconds 
 
 const expectedCodes = {
   "start": { id: "Start", label: "Start" },
@@ -15,9 +14,9 @@ const expectedCodes = {
   // Even though start, home and finish don't need ids it's still good to have them for consistency
 };
 
+// Game state
 const STORAGE_KEY = "gameState";
 
-// Game state
 function createNewGameState() {
   return {
     controls: {
@@ -39,9 +38,7 @@ let gameState = createNewGameState();
 let scanner = null;
 let scannerIsRunning = false;
 let scanTimeout = null;
-let lastScanProcessedTime = 0;
-
-// let resetClicks = 0;
+// let lastScanProcessedTime = 0;
 
 function saveGame() {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(gameState));
@@ -74,23 +71,6 @@ function loadGame() {
     setStatus("Saved game was corrupted. Starting fresh.");
   }
 }
-// function loadGame() {
-//   const saved = localStorage.getItem(STORAGE_KEY);
-
-//   if (!saved) {
-//     document.getElementById("status").textContent = "No saved game found.";
-//     return;
-//   }
-
-//   gameState = JSON.parse(saved);
-//   // restoreGame();
-//   // document.getElementById("status").textContent = "Saved game restored.";
-
-//   // Safety defaults for older saved versions
-//   gameState.log = gameState.log || [];
-//   gameState.lastScanTime = gameState.lastScanTime || null;
-//   gameState.scannedCodes = gameState.scannedCodes || [];
-// }
 
 function resetGame() {
   if (!confirm("Start a new game? This clears all saved progress.")) {
@@ -99,9 +79,6 @@ function resetGame() {
 
   gameState = createNewGameState();
   saveGame();
-
-  lastScanTime = null;
-
   loadProgress();
   loadLog();
 
@@ -112,90 +89,21 @@ function resetGame() {
   setStatus("New game started.");
 }
 
+function loadProgress() {
+  for (const id in gameState.controls) {
+    const checkbox = document.getElementById(id);
+
+    if (checkbox) {
+      checkbox.checked = gameState.controls[id];
+    }
+  }
+}
+
+// UI
 // Shorthand for changing textContent of elements
 function setStatus(message) {
   const statusElement = document.getElementById("status");
   if (statusElement) statusElement.textContent = message;
-}
-
-// Format a timestamp (ms) to HH:MM:SS string (UTC)
-function formatTime(ms) {
-  const date = new Date(ms);
-  return date.toTimeString().split(" ")[0];
-}
-
-// Format elapsed time as HH:MM:SS string
-function formatSplit(ms) {
-  const s = Math.floor(ms / 1000);
-  const h = String(Math.floor(s / 3600)).padStart(2, '0');
-  const m = String(Math.floor((s % 3600) / 60)).padStart(2, '0');
-  const sec = String(s % 60).padStart(2, '0');
-  return `${h}:${m}:${sec}`;
-}
-
-// Calculate split time string between two timestamps
-function calculateSplit(currentTimestamp, previousTimestamp) {
-  if (!previousTimestamp || currentTimestamp <= previousTimestamp) {
-    return "--:--:--";
-  }
-  return formatSplit(currentTimestamp - previousTimestamp);
-}
-
-// Create a <tr> element for the log table with label, time, and split
-function createLogRow(label, timestamp, split) {
-  const row = document.createElement("tr");
-
-  const labelCell = document.createElement("td");
-  const timeCell = document.createElement("td");
-  const splitCell = document.createElement("td");
-
-  labelCell.textContent = label;
-  timeCell.textContent = formatTime(timestamp);
-  splitCell.textContent = split;
-
-  row.appendChild(labelCell);
-  row.appendChild(timeCell);
-  row.appendChild(splitCell);
-
-  return row;
-}
-
-// Adding information to the table
-function addToLog(label, timestamp) {
-  const table = document.getElementById("log-table").querySelector("tbody");
-  const split = calculateSplit(timestamp, gameState.lastScanTime);
-  const row = createLogRow(label, timestamp, split);
-  table.appendChild(row);
-
-  // Save to local storage
-  gameState.log.push({ label, timestamp });
-  gameState.lastScanTime = timestamp;
-  saveGame();
-}
-
-// Problem here with finish being scanned first
-// Now it will print the finish scanned before start
-// But is that what we want? Change logic to accommodate
-// Previous message was finish time recalculated, test this function as well
-// How will you handle multiple finishes in the table and using the timestamps?
-function calculateAndDisplayTotalTime() {
-  const startEntry = gameState.log.find(entry => entry.label === "Start");
-  const finishEntry = gameState.log.filter(entry => entry.label === "Finish").at(-1);
-
-  if (!startEntry || !finishEntry) {
-    return;
-  }
-
-  const totalTime = finishEntry.timestamp - startEntry.timestamp;
-  const totalBox = document.getElementById("total-time");
-
-  if (totalTime < 0) {
-    totalBox.textContent = `❌ Finish scanned before Start`;
-    totalBox.style.display = "block";
-  } else {
-    totalBox.textContent = `🏁 Total Time: ${formatSplit(totalTime)}`;
-    totalBox.style.display = "block";
-  }
 }
 
 function updateUI(code) {
@@ -240,6 +148,104 @@ function updateUI(code) {
   setStatus(`🚩 ${entry.label} found!`);
 }
 
+// TIMING
+// Format a timestamp (ms) to HH:MM:SS string (UTC)
+function formatTime(ms) {
+  const date = new Date(ms);
+  return date.toTimeString().split(" ")[0];
+}
+
+// Format elapsed time as HH:MM:SS string
+function formatSplit(ms) {
+  const s = Math.floor(ms / 1000);
+  const h = String(Math.floor(s / 3600)).padStart(2, '0');
+  const m = String(Math.floor((s % 3600) / 60)).padStart(2, '0');
+  const sec = String(s % 60).padStart(2, '0');
+  return `${h}:${m}:${sec}`;
+}
+
+// Calculate split time string between two timestamps
+function calculateSplit(currentTimestamp, previousTimestamp) {
+  if (!previousTimestamp || currentTimestamp <= previousTimestamp) {
+    return "--:--:--";
+  }
+  return formatSplit(currentTimestamp - previousTimestamp);
+}
+
+function calculateAndDisplayTotalTime() {
+  const startEntry = gameState.log.find(entry => entry.label === "Start");
+  const finishEntry = gameState.log.filter(entry => entry.label === "Finish").at(-1);
+
+  if (!startEntry || !finishEntry) {
+    return;
+  }
+
+  const totalTime = finishEntry.timestamp - startEntry.timestamp;
+  const totalBox = document.getElementById("total-time");
+
+  if (totalTime < 0) {
+    totalBox.textContent = `❌ Finish scanned before Start`;
+    totalBox.style.display = "block";
+  } else {
+    totalBox.textContent = `🏁 Total Time: ${formatSplit(totalTime)}`;
+    totalBox.style.display = "block";
+  }
+}
+
+// TABLE
+// Create a <tr> element for the log table with label, time, and split
+function createLogRow(label, timestamp, split) {
+  const row = document.createElement("tr");
+
+  const labelCell = document.createElement("td");
+  const timeCell = document.createElement("td");
+  const splitCell = document.createElement("td");
+
+  labelCell.textContent = label;
+  timeCell.textContent = formatTime(timestamp);
+  splitCell.textContent = split;
+
+  row.appendChild(labelCell);
+  row.appendChild(timeCell);
+  row.appendChild(splitCell);
+
+  return row;
+}
+
+// Adding information to the table
+function addToLog(label, timestamp) {
+  const table = document.getElementById("log-table").querySelector("tbody");
+  const split = calculateSplit(timestamp, gameState.lastScanTime);
+  const row = createLogRow(label, timestamp, split);
+  table.appendChild(row);
+
+  // Save to local storage
+  gameState.log.push({ label, timestamp });
+  gameState.lastScanTime = timestamp;
+  saveGame();
+}
+
+function loadLog() {
+  const log = gameState.log;
+  const table = document.getElementById("log-table").querySelector("tbody");
+  table.innerHTML = "";
+  
+  let prevTimestamp = null;
+  const fragment = document.createDocumentFragment();
+
+  log.forEach( (entry) => {
+    const split = calculateSplit(entry.timestamp, prevTimestamp);
+    const row = createLogRow(entry.label, entry.timestamp, split);
+    fragment.appendChild(row);
+    prevTimestamp = entry.timestamp;
+  });
+  
+  table.appendChild(fragment);
+  gameState.lastScanTime = prevTimestamp;
+}
+
+
+// SCANNER
 function stopScanner() {
   if (!scannerIsRunning || !scanner) return;
 
@@ -279,9 +285,9 @@ function startScanner() {
       { facingMode: "environment" },
       { fps: 10, qrbox: 250 },
       qrCodeMessage => {
-        const now = Date.now();
-        if (now - lastScanProcessedTime >= cooldown) {
-          lastScanProcessedTime = now;
+        // const now = Date.now();
+        // if (now - lastScanProcessedTime >= cooldown) {
+        //   lastScanProcessedTime = now;
           updateUI(qrCodeMessage); 
           stopScanner(); // This is good for stopping after a successful scan process
           // But we may want to know if what we scanned was acceptable. Do later if necessary.
@@ -309,75 +315,6 @@ function startScanner() {
     console.error("Camera error:", err);
     setStatus("Camera access error.");
   });
-}
-
-// function refresh() {
-//   resetClicks++;
-//   const btn = document.getElementById("reset-btn");
-
-//   if (resetClicks >= maxResetClicks) {
-//     // Reset progress
-//     for (const code in expectedCodes) {
-//       const entry = expectedCodes[code];
-//       if (entry.id) {
-//         localStorage.removeItem(entry.id);
-//         const checkbox = document.getElementById(entry.id);
-//         if (checkbox) checkbox.checked = false;
-//       }
-//     }
-
-//     // Reset scanned state
-//     scannedCodes.clear();
-//     lastScanTime = null;
-
-//     // Clear log table
-//     const table = document.querySelector("#log-table tbody");
-//     table.innerHTML = "";
-
-//     // Clear total time box
-//     const totalBox = document.getElementById("total-time");
-//     totalBox.textContent = "";
-//     totalBox.style.display = "none";
-
-//     // Clear status
-//     setStatus("");
-
-//     // Reset click counter
-//     resetClicks = 0;
-
-//     // Clear local storage
-//     localStorage.removeItem("scanLog");
-//     localStorage.removeItem("lastScanTime");
-//   }
-// }
-
-function loadProgress() {
-  for (const id in gameState.controls) {
-    const checkbox = document.getElementById(id);
-
-    if (checkbox) {
-      checkbox.checked = gameState.controls[id];
-    }
-  }
-}
-
-function loadLog() {
-  const log = gameState.log;
-  const table = document.getElementById("log-table").querySelector("tbody");
-  table.innerHTML = "";
-  
-  let prevTimestamp = null;
-  const fragment = document.createDocumentFragment();
-
-  log.forEach( (entry) => {
-    const split = calculateSplit(entry.timestamp, prevTimestamp);
-    const row = createLogRow(entry.label, entry.timestamp, split);
-    fragment.appendChild(row);
-    prevTimestamp = entry.timestamp;
-  });
-  
-  table.appendChild(fragment);
-  gameState.lastScanTime = prevTimestamp;
 }
 
 window.addEventListener("DOMContentLoaded", () => {
