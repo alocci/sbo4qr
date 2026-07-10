@@ -1,7 +1,7 @@
 // Constants
 const scannerTimeoutDuration = 20000; // 20 seconds
 const cooldown = 5000; // 5 seconds 
-const maxResetClicks = 3;
+// const maxResetClicks = 3;
 
 const expectedCodes = {
   "start": { id: "Start", label: "Start" },
@@ -41,7 +41,7 @@ let lastScanTime = null;
 let scannedCodes = new Set(); // assigning a new instance of class Set()
 let lastScanProcessedTime = 0;
 
-let resetClicks = 0;
+// let resetClicks = 0;
 
 function saveGame() {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(gameState));
@@ -58,6 +58,45 @@ function loadGame() {
   gameState = JSON.parse(saved);
   // restoreGame();
   // document.getElementById("status").textContent = "Saved game restored.";
+
+  // Safety defaults for older saved versions
+  gameState.log = gameState.log || [];
+  gameState.lastScanTime = gameState.lastScanTime || null;
+  gameState.scannedCodes = gameState.scannedCodes || [];
+}
+
+function resetGame() {
+  if (!confirm("Start a new game? This clears all saved progress.")) {
+    return;
+  }
+
+  gameState = {
+    controls: {
+      Control_1: false,
+      Control_2: false,
+      Control_3: false,
+      Control_4: false,
+      Control_5: false
+    },
+
+    log: [],
+    lastScanTime: null,
+    scannedCodes: []
+  };
+
+  saveGame();
+
+  scannedCodes.clear();
+  lastScanTime = null;
+
+  loadProgress();
+  loadLog();
+
+  const totalBox = document.getElementById("total-time");
+  totalBox.textContent = "";
+  totalBox.style.display = "none";
+
+  setStatus("New game started.");
 }
 
 // Shorthand for changing textContent of elements
@@ -267,45 +306,45 @@ function startScanner() {
   });
 }
 
-function refresh() {
-  resetClicks++;
-  const btn = document.getElementById("reset-btn");
+// function refresh() {
+//   resetClicks++;
+//   const btn = document.getElementById("reset-btn");
 
-  if (resetClicks >= maxResetClicks) {
-    // Reset progress
-    for (const code in expectedCodes) {
-      const entry = expectedCodes[code];
-      if (entry.id) {
-        localStorage.removeItem(entry.id);
-        const checkbox = document.getElementById(entry.id);
-        if (checkbox) checkbox.checked = false;
-      }
-    }
+//   if (resetClicks >= maxResetClicks) {
+//     // Reset progress
+//     for (const code in expectedCodes) {
+//       const entry = expectedCodes[code];
+//       if (entry.id) {
+//         localStorage.removeItem(entry.id);
+//         const checkbox = document.getElementById(entry.id);
+//         if (checkbox) checkbox.checked = false;
+//       }
+//     }
 
-    // Reset scanned state
-    scannedCodes.clear();
-    lastScanTime = null;
+//     // Reset scanned state
+//     scannedCodes.clear();
+//     lastScanTime = null;
 
-    // Clear log table
-    const table = document.querySelector("#log-table tbody");
-    table.innerHTML = "";
+//     // Clear log table
+//     const table = document.querySelector("#log-table tbody");
+//     table.innerHTML = "";
 
-    // Clear total time box
-    const totalBox = document.getElementById("total-time");
-    totalBox.textContent = "";
-    totalBox.style.display = "none";
+//     // Clear total time box
+//     const totalBox = document.getElementById("total-time");
+//     totalBox.textContent = "";
+//     totalBox.style.display = "none";
 
-    // Clear status
-    setStatus("");
+//     // Clear status
+//     setStatus("");
 
-    // Reset click counter
-    resetClicks = 0;
+//     // Reset click counter
+//     resetClicks = 0;
 
-    // Clear local storage
-    localStorage.removeItem("scanLog");
-    localStorage.removeItem("lastScanTime");
-  }
-}
+//     // Clear local storage
+//     localStorage.removeItem("scanLog");
+//     localStorage.removeItem("lastScanTime");
+//   }
+// }
 
 function loadProgress() {
   for (const id in gameState.controls) {
@@ -338,7 +377,7 @@ function loadLog() {
 
 window.addEventListener("DOMContentLoaded", () => {
   document.getElementById("scan-btn").addEventListener("click", startScanner);
-  document.getElementById("reset-btn").addEventListener("click", refresh);
+  document.getElementById("reset-btn").addEventListener("click", resetGame);
   loadGame();
   loadProgress();
   loadLog();
