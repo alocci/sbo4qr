@@ -211,6 +211,7 @@ function updateUI(code) {
     } else {
       setStatus(`✔️ ${entry.label} already scanned.`);
     }
+    return;
   }
 
   scannedCodes.add(code);
