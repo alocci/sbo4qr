@@ -15,6 +15,23 @@ const expectedCodes = {
   // Even though start, home and finish don't need ids it's still good to have them for consistency
 };
 
+const STORAGE_KEY = "gameState";
+
+// Game state
+let gameState = {
+  controls: {
+    Control_1: false,
+    Control_2: false,
+    Control_3: false,
+    Control_4: false,
+    Control_5: false
+  },
+
+  log: [],
+  lastScanTime: null,
+  scannedCodes: [],
+};
+
 // Variables
 let scanner = null;
 let scannerIsRunning = false;
