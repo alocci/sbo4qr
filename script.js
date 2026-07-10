@@ -111,17 +111,13 @@ function createLogRow(label, timestamp, split) {
 // Adding information to the table
 function addToLog(label, timestamp) {
   const table = document.getElementById("log-table").querySelector("tbody");
-
   const split = calculateSplit(timestamp, lastScanTime);
-  
   const row = createLogRow(label, timestamp, split);
   table.appendChild(row);
 
   lastScanTime = timestamp;
   
   // Save to local storage
-  const existingLog = JSON.parse(localStorage.getItem("scanLog")) || [];
-  existingLog.push({ label, timestamp });
   gameState.log.push({ label, timestamp });
   gameState.lastScanTime = timestamp;
   saveGame();
@@ -182,13 +178,10 @@ function updateUI(code) {
   addToLog(entry.label, now);
   setStatus(`🚩 ${entry.label} found!`);
 
-  // Update checkbox
+  // Update game state
   if (entry.id) {
-    const checkbox = document.getElementById(entry.id);
-    if (checkbox) {
-      checkbox.checked = true;
-      localStorage.setItem(entry.id, "true");
-    }
+    gameState.controls[entry.id] = true;
+    saveGame();
   }
 
   if (code === "finish") {
@@ -308,15 +301,11 @@ function refresh() {
 }
 
 function loadProgress() {
-  for (const code in expectedCodes) {
-    const entry = expectedCodes[code];
-    if (entry.id) {
-      const isChecked = localStorage.getItem(entry.id) === "true";
-      if (isChecked) {
-        const checkbox = document.getElementById(entry.id);
-        if (checkbox) checkbox.checked = true;
-        scannedCodes.add(code); 
-      }
+  for (const id in gameState.controls) {
+    const checkbox = document.getElementById(id);
+
+    if (checkbox) {
+      checkbox.checked = gameState.controls[id];
     }
   }
 }
