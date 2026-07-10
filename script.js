@@ -229,7 +229,8 @@ function updateUI(code) {
   }
 
   gameState.scannedCodes.push(code);
-
+  saveGame();
+  
   // Update game state
   if (entry.id) {
     gameState.controls[entry.id] = true;
