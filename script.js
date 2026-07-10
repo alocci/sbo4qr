@@ -18,19 +18,23 @@ const expectedCodes = {
 const STORAGE_KEY = "gameState";
 
 // Game state
-let gameState = {
-  controls: {
-    Control_1: false,
-    Control_2: false,
-    Control_3: false,
-    Control_4: false,
-    Control_5: false
-  },
+function createNewGameState() {
+  return {
+    controls: {
+      Control_1: false,
+      Control_2: false,
+      Control_3: false,
+      Control_4: false,
+      Control_5: false
+    },
 
-  log: [],
-  lastScanTime: null,
-  scannedCodes: [],
-};
+    log: [],
+    lastScanTime: null,
+    scannedCodes: []
+  };
+}
+
+let gameState = createNewGameState();
 
 // Variables
 let scanner = null;
@@ -50,38 +54,52 @@ function loadGame() {
   const saved = localStorage.getItem(STORAGE_KEY);
 
   if (!saved) {
-    document.getElementById("status").textContent = "No saved game found.";
+    setStatus("No saved game found.");
     return;
   }
 
-  gameState = JSON.parse(saved);
-  // restoreGame();
-  // document.getElementById("status").textContent = "Saved game restored.";
+  try {
+    const savedState = JSON.parse(saved);
 
-  // Safety defaults for older saved versions
-  gameState.log = gameState.log || [];
-  gameState.lastScanTime = gameState.lastScanTime || null;
-  gameState.scannedCodes = gameState.scannedCodes || [];
+    gameState = {
+      ...createNewGameState(),
+      ...savedState,
+      controls: {
+        ...createNewGameState().controls,
+        ...savedState.controls
+      }
+    };
+
+  } catch (error) {
+    console.error("Could not load saved game:", error);
+    gameState = createNewGameState();
+    setStatus("Saved game was corrupted. Starting fresh.");
+  }
 }
+// function loadGame() {
+//   const saved = localStorage.getItem(STORAGE_KEY);
+
+//   if (!saved) {
+//     document.getElementById("status").textContent = "No saved game found.";
+//     return;
+//   }
+
+//   gameState = JSON.parse(saved);
+//   // restoreGame();
+//   // document.getElementById("status").textContent = "Saved game restored.";
+
+//   // Safety defaults for older saved versions
+//   gameState.log = gameState.log || [];
+//   gameState.lastScanTime = gameState.lastScanTime || null;
+//   gameState.scannedCodes = gameState.scannedCodes || [];
+// }
 
 function resetGame() {
   if (!confirm("Start a new game? This clears all saved progress.")) {
     return;
   }
 
-  gameState = {
-    controls: {
-      Control_1: false,
-      Control_2: false,
-      Control_3: false,
-      Control_4: false,
-      Control_5: false
-    },
-
-    log: [],
-    lastScanTime: null,
-    scannedCodes: []
-  };
+  gameState = createNewGameState();
 
   saveGame();
 
