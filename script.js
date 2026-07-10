@@ -179,18 +179,16 @@ function addToLog(label, timestamp) {
 // Previous message was finish time recalculated, test this function as well
 // How will you handle multiple finishes in the table and using the timestamps?
 function calculateAndDisplayTotalTime() {
-  const rows = Array.from(document.querySelectorAll("#log-table tbody tr"));
-  const startRow = rows.find(row => row.cells[0].textContent === "Start");
-  const finishRow = rows.filter(row => row.cells[0].textContent === "Finish").at(-1);
+  const startEntry = gameState.log.find(entry => entry.label === "Start");
+  const finishEntry = gameState.log.filter(entry => entry.label === "Finish").at(-1);
 
-  if (!startRow || !finishRow) return; // easier to read an early return than wrapped conditional ?
-  
-  const startTime = new Date("1970-01-01T" + startRow.cells[1].textContent + "Z").getTime();
-  const finishTime = new Date("1970-01-01T" + finishRow.cells[1].textContent + "Z").getTime();
-  const totalTime = finishTime - startTime;
-  
+  if (!startEntry || !finishEntry) {
+    return;
+  }
+
+  const totalTime = finishEntry.timestamp - startEntry.timestamp;
   const totalBox = document.getElementById("total-time");
-  
+
   if (totalTime < 0) {
     totalBox.textContent = `❌ Finish scanned before Start`;
     totalBox.style.display = "block";
