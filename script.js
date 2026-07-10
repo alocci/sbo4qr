@@ -43,6 +43,23 @@ let lastScanProcessedTime = 0;
 
 let resetClicks = 0;
 
+function saveGame() {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(gameState));
+}
+
+function loadGame() {
+  const saved = localStorage.getItem(STORAGE_KEY);
+
+  if (!saved) {
+    document.getElementById("status").textContent = "No saved game found.";
+    return;
+  }
+
+  gameState = JSON.parse(saved);
+  // restoreGame();
+  // document.getElementById("status").textContent = "Saved game restored.";
+}
+
 // Shorthand for changing textContent of elements
 function setStatus(message) {
   const statusElement = document.getElementById("status");
@@ -105,8 +122,9 @@ function addToLog(label, timestamp) {
   // Save to local storage
   const existingLog = JSON.parse(localStorage.getItem("scanLog")) || [];
   existingLog.push({ label, timestamp });
-  localStorage.setItem("scanLog", JSON.stringify(existingLog));
-  localStorage.setItem("lastScanTime", timestamp.toString());
+  gameState.log.push({ label, timestamp });
+  gameState.lastScanTime = timestamp;
+  saveGame();
 }
 
 // Problem here with finish being scanned first
@@ -304,7 +322,7 @@ function loadProgress() {
 }
 
 function loadLog() {
-  const log = JSON.parse(localStorage.getItem("scanLog")) || [];
+  const log = gameState.log;
   const table = document.getElementById("log-table").querySelector("tbody");
   table.innerHTML = "";
   
@@ -325,6 +343,7 @@ function loadLog() {
 window.addEventListener("DOMContentLoaded", () => {
   document.getElementById("scan-btn").addEventListener("click", startScanner);
   document.getElementById("reset-btn").addEventListener("click", refresh);
+  loadGame();
   loadProgress();
   loadLog();
 });
