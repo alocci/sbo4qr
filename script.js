@@ -1,7 +1,6 @@
 // Constants
 const scannerTimeoutDuration = 20000; // 20 seconds
-// const cooldown = 1000; // 5 seconds 
-
+const STORAGE_KEY = "gameState";
 const expectedCodes = {
   "start": { id: "Start", label: "Start" },
   "control_uno": { id: "Control_1", label: "Control 1" },
@@ -14,9 +13,14 @@ const expectedCodes = {
   // Even though start, home and finish don't need ids it's still good to have them for consistency
 };
 
-// Game state
-const STORAGE_KEY = "gameState";
+// Variables
+let scanner = null;
+let scannerIsRunning = false;
+let scanTimeout = null;
 
+let gameState = createNewGameState();
+
+// Game State
 function createNewGameState() {
   return {
     controls: {
@@ -31,14 +35,6 @@ function createNewGameState() {
     lastScanTime: null,
   };
 }
-
-let gameState = createNewGameState();
-
-// Scanner Variables
-let scanner = null;
-let scannerIsRunning = false;
-let scanTimeout = null;
-// let lastScanProcessedTime = 0;
 
 function saveGame() {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(gameState));
@@ -63,7 +59,7 @@ function loadGame() {
         ...savedState.controls
       }
     };
-    delete gameState.scannedCodes;
+    delete gameState.scannedCodes; // Remove obsolete property from older save versions
 
   } catch (error) {
     console.error("Could not load saved game:", error);
@@ -123,7 +119,7 @@ function updateUI(code) {
     }
     if (code === "finish") {
       calculateAndDisplayTotalTime();
-      setStatus(`⏱ Total time recalculated.`); // backticks allow interpolation
+      setStatus(`🏆 Finish! Total time updated.`); // backticks allow interpolation
     }
     return;
   }
@@ -244,7 +240,6 @@ function loadLog() {
   gameState.lastScanTime = prevTimestamp;
 }
 
-
 // SCANNER
 function stopScanner() {
   if (!scannerIsRunning || !scanner) return;
@@ -285,13 +280,9 @@ function startScanner() {
       { facingMode: "environment" },
       { fps: 10, qrbox: 250 },
       qrCodeMessage => {
-        // const now = Date.now();
-        // if (now - lastScanProcessedTime >= cooldown) {
-        //   lastScanProcessedTime = now;
-          updateUI(qrCodeMessage); 
-          stopScanner(); // This is good for stopping after a successful scan process
-          // But we may want to know if what we scanned was acceptable. Do later if necessary.
-        }
+        updateUI(qrCodeMessage); 
+        stopScanner(); 
+        // Stops after a successful scan process but we may want to know if what we scanned was acceptable. Do later if necessary.
       },
       errorMessage => {
         console.warn("QR scan error:", errorMessage);
