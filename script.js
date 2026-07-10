@@ -1,6 +1,6 @@
 // Constants
 const scannerTimeoutDuration = 20000; // 20 seconds
-const cooldown = 5000; // 5 seconds 
+const cooldown = 1000; // 5 seconds 
 // const maxResetClicks = 3;
 
 const expectedCodes = {
