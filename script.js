@@ -10,7 +10,6 @@ const expectedCodes = {
   "control_cinque": { id: "Control_5", label: "Control 5" },
   "home": { id: "Home", label: "Home" },
   "finish": { id: "Finish", label: "Finish" }
-  // Even though start, home and finish don't need ids it's still good to have them for consistency
 };
 
 // Variables
@@ -59,7 +58,6 @@ function loadGame() {
         ...savedState.controls
       }
     };
-    delete gameState.scannedCodes; // Remove obsolete property from older save versions
 
   } catch (error) {
     console.error("Could not load saved game:", error);
@@ -282,7 +280,6 @@ function startScanner() {
       qrCodeMessage => {
         updateUI(qrCodeMessage); 
         stopScanner(); 
-        // Stops after a successful scan process but we may want to know if what we scanned was acceptable. Do later if necessary.
       },
       errorMessage => {
         console.warn("QR scan error:", errorMessage);
