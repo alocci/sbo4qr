@@ -85,7 +85,8 @@ function resetGame() {
 
   saveGame();
 
-  gameState.scannedCodes = [];
+  gameState.scannedCodes = []; // Emptying scannedCodes.
+  // Unfortunately JSON doesn't preserve Sets so can't use a Set here. Have to use array.
   lastScanTime = null;
 
   loadProgress();
