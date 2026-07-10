@@ -38,7 +38,6 @@ let scannerIsRunning = false;
 let scanTimeout = null;
 
 let lastScanTime = null;
-let scannedCodes = new Set(); // assigning a new instance of class Set()
 let lastScanProcessedTime = 0;
 
 // let resetClicks = 0;
@@ -86,7 +85,7 @@ function resetGame() {
 
   saveGame();
 
-  scannedCodes.clear();
+  gameState.scannedCodes = [];
   lastScanTime = null;
 
   loadProgress();
@@ -204,7 +203,7 @@ function updateUI(code) {
     return;
   }
 
-  if (scannedCodes.has(code)) {
+  if (gameState.scannedCodes.includes(code)) {
     if (code === "finish") {
       calculateAndDisplayTotalTime();
       setStatus(`⏱ Total time recalculated.`); // backticks allow interpolation
@@ -214,9 +213,8 @@ function updateUI(code) {
     return;
   }
 
-  scannedCodes.add(code);
-  console.log("Scanned codes:", scannedCodes);
-  
+  gameState.scannedCodes.push(code);
+  saveGame();
   addToLog(entry.label, now);
   setStatus(`🚩 ${entry.label} found!`);
 
