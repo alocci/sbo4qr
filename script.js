@@ -30,7 +30,6 @@ function createNewGameState() {
 
     log: [],
     lastScanTime: null,
-    scannedCodes: []
   };
 }
 
@@ -67,6 +66,7 @@ function loadGame() {
         ...savedState.controls
       }
     };
+    delete gameState.scannedCodes;
 
   } catch (error) {
     console.error("Could not load saved game:", error);
@@ -223,13 +223,10 @@ function updateUI(code) {
   }
 
   // Controls
-  if (gameState.scannedCodes.includes(code)) {
+  if (gameState.log.some(logEntry => logEntry.label === entry.label)) {
     setStatus(`✔️ ${entry.label} already scanned.`);
     return;
   }
-
-  gameState.scannedCodes.push(code);
-  saveGame();
   
   // Update game state
   if (entry.id) {
