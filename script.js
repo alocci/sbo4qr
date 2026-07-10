@@ -36,12 +36,10 @@ function createNewGameState() {
 
 let gameState = createNewGameState();
 
-// Variables
+// Scanner Variables
 let scanner = null;
 let scannerIsRunning = false;
 let scanTimeout = null;
-
-let lastScanTime = null;
 let lastScanProcessedTime = 0;
 
 // let resetClicks = 0;
@@ -165,12 +163,10 @@ function createLogRow(label, timestamp, split) {
 // Adding information to the table
 function addToLog(label, timestamp) {
   const table = document.getElementById("log-table").querySelector("tbody");
-  const split = calculateSplit(timestamp, lastScanTime);
+  const split = calculateSplit(timestamp, gameState.lastScanTime);
   const row = createLogRow(label, timestamp, split);
   table.appendChild(row);
 
-  lastScanTime = timestamp;
-  
   // Save to local storage
   gameState.log.push({ label, timestamp });
   gameState.lastScanTime = timestamp;
@@ -230,20 +226,19 @@ function updateUI(code) {
   }
 
   gameState.scannedCodes.push(code);
-  saveGame();
-  addToLog(entry.label, now);
-  setStatus(`🚩 ${entry.label} found!`);
 
   // Update game state
   if (entry.id) {
     gameState.controls[entry.id] = true;
-    saveGame();
     
     const checkbox = document.getElementById(entry.id);
     if (checkbox) {
       checkbox.checked = true;
     }
   }
+
+  addToLog(entry.label, now);
+  setStatus(`🚩 ${entry.label} found!`);
   
   console.log(gameState);
 
@@ -389,7 +384,7 @@ function loadLog() {
   });
   
   table.appendChild(fragment);
-  lastScanTime = prevTimestamp;
+  gameState.lastScanTime = prevTimestamp;
 }
 
 window.addEventListener("DOMContentLoaded", () => {
