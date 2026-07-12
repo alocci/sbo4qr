@@ -1,3 +1,9 @@
+// Need to make a QR code that opens this site in a browser
+// Maybe a QR code that has Beer so the splits are easier
+// And set them up so that I don't have to be called on every time
+// Then look into making the storage more permanent and maybe preventing people from taking a photo and scanning it
+// Then also cleaning up all the commits and the dev tree
+
 // Constants
 const scannerTimeoutDuration = 20000; // 20 seconds
 const STORAGE_KEY = "gameState";
